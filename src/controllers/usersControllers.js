@@ -43,6 +43,23 @@ const getOneClient = async (req, res) => {
     }
 }
 
+const updateClient = async (req, res) => {
+    const {dni, email, name} = req.body;
+
+    try {
+
+        const updateClient = await UserModel.findOneAndUpdate({dni}, {
+            email,
+            name
+        })
+
+        return res.status(200).send({ status: 'OK', getOneClient })
+
+    } catch (error) {
+        res.status(500).send({ status: 'FALSE' })
+    }
+}
 
 
-module.exports = { createClient, getOneClient }
+
+module.exports = { createClient, getOneClient, updateClient }
