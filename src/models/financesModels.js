@@ -17,6 +17,10 @@ const financeSchema = Schema({
         type: Number,
         required:true
     },
+    interest:{
+        type:Number,
+        required:true
+    },
     userDni: {
         type: String,
         ref: "Users",

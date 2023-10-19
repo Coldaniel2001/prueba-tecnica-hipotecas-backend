@@ -22,5 +22,18 @@ const saveFinances = async (req, res) => {
         res.status(500).send({ status: 'FALSE' })
     }
 }
+const getFinancesFromClient = async (req, res) => {
+    const {clientDni} = req.params
 
-module.exports = { saveFinances }
+    try {
+       const getInfoFinances = await FinancesModels.find({userDni:clientDni})
+
+            return res.status(200).send({ status: 'OK', getInfoFinances })
+        
+
+    } catch (error) {
+        res.status(500).send({ status: 'FALSE' })
+    }
+}
+
+module.exports = { saveFinances, getFinancesFromClient }
