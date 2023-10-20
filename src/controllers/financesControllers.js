@@ -41,9 +41,23 @@ const deleteClient = async (req, res) => {
 
     try {
 
-        const deleteClient = await FinancesModels.deleteOne({ userDni: clientDni })
+        const deleteClient = await FinancesModels.deleteMany({ userDni: clientDni })
 
         return res.status(200).send({ status: 'OK' })
+
+    } catch (error) {
+        res.status(500).send({ status: 'FALSE' })
+    }
+}
+const deleteFinances = async (req, res) => {
+    const { financesId } = req.params;
+    const { userDni } = req.body;
+
+    try {
+
+        const deleteClient = await FinancesModels.deleteOne({ _id: financesId })
+        const getAllFinances = await FinancesModels.find({userDni: userDni})
+        return res.status(200).send({ status: 'OK', getAllFinances })
 
     } catch (error) {
         res.status(500).send({ status: 'FALSE' })
@@ -76,4 +90,4 @@ const editFinances = async (req, res) => {
     }
 }
 
-module.exports = { saveFinances, getFinancesFromClient, deleteClient, editFinances }
+module.exports = { saveFinances, getFinancesFromClient, deleteClient, deleteFinances, editFinances }
