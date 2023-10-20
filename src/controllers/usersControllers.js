@@ -48,12 +48,18 @@ const updateClient = async (req, res) => {
 
     try {
 
-        const updateClient = await UserModel.findOneAndUpdate({ dni }, {
-            email,
-            name
-        })
+        const emailExist = await UserModel.find({ email })
 
-        return res.status(200).send({ status: 'OK', getOneClient })
+        if (emailExist.length === 0) {
+            const updateClient = await UserModel.findOneAndUpdate({ dni }, {
+                email,
+                name
+            })
+            return res.status(200).send({ status: 'OK', updateClient })
+        } else {
+            return res.status(200).send({ status: 'Email Exist' })
+        }
+
 
     } catch (error) {
         res.status(500).send({ status: 'FALSE' })
