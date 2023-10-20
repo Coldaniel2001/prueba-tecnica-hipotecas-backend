@@ -15,25 +15,65 @@ const saveFinances = async (req, res) => {
             userDni: clientDni
         })
 
-            return res.status(200).send({ status: 'OK', newFinance })
-        
+        return res.status(200).send({ status: 'OK', newFinance })
+
 
     } catch (error) {
         res.status(500).send({ status: 'FALSE' })
     }
 }
 const getFinancesFromClient = async (req, res) => {
-    const {clientDni} = req.params
+    const { clientDni } = req.params
 
     try {
-       const getInfoFinances = await FinancesModels.find({userDni:clientDni})
+        const getInfoFinances = await FinancesModels.find({ userDni: clientDni })
 
-            return res.status(200).send({ status: 'OK', getInfoFinances })
-        
+        return res.status(200).send({ status: 'OK', getInfoFinances })
+
 
     } catch (error) {
         res.status(500).send({ status: 'FALSE' })
     }
 }
 
-module.exports = { saveFinances, getFinancesFromClient }
+const deleteClient = async (req, res) => {
+    const { clientDni } = req.params;
+
+    try {
+
+        const deleteClient = await FinancesModels.deleteOne({ userDni: clientDni })
+
+        return res.status(200).send({ status: 'OK' })
+
+    } catch (error) {
+        res.status(500).send({ status: 'FALSE' })
+    }
+}
+const editFinances = async (req, res) => {
+    const { financesId } = req.params;
+    const { concept, finance, amortization, interest, monthlyFee, userDni } = req.body;
+    
+    try {
+
+
+        const updateFinances = await FinancesModels.findOneAndUpdate({ _id: financesId }, {
+            concept: concept,
+            finance: finance,
+            amortization: amortization,
+            interest: interest,
+            monthlyFee: monthlyFee
+        },
+        {
+            new:true
+        })
+
+        const getAllFinances = await FinancesModels.find({userDni: userDni})
+       
+        return res.status(200).send({ status: 'OK', getAllFinances })
+
+    } catch (error) {
+        res.status(500).send({ status: 'FALSE' })
+    }
+}
+
+module.exports = { saveFinances, getFinancesFromClient, deleteClient, editFinances }

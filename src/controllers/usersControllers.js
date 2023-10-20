@@ -9,13 +9,13 @@ const createClient = async (req, res) => {
         if (dniExist && !gmailExist) {
             console.log(dni)
             return res.status(200).send({ status: 'EXISTE DNI' })
-        }else if(gmailExist && !dniExist){
+        } else if (gmailExist && !dniExist) {
             console.log(dni)
             return res.status(200).send({ status: 'EXISTE Gmail' })
-        }else if(dniExist && gmailExist){
+        } else if (dniExist && gmailExist) {
             console.log(dni)
             return res.status(200).send({ status: 'EXISTE Gmail y DNI' })
-        }else{
+        } else {
             console.log(dni)
             const newClient = await UserModel.create({
                 name,
@@ -44,11 +44,11 @@ const getOneClient = async (req, res) => {
 }
 
 const updateClient = async (req, res) => {
-    const {dni, email, name} = req.body;
+    const { dni, email, name } = req.body;
 
     try {
 
-        const updateClient = await UserModel.findOneAndUpdate({dni}, {
+        const updateClient = await UserModel.findOneAndUpdate({ dni }, {
             email,
             name
         })
@@ -59,7 +59,34 @@ const updateClient = async (req, res) => {
         res.status(500).send({ status: 'FALSE' })
     }
 }
+const deleteClient = async (req, res) => {
+    const { clientDni } = req.params;
+    console.log(clientDni)
+
+    try {
+
+        const deleteClient = await UserModel.deleteOne({ dni: clientDni })
+
+        return res.status(200).send({ status: 'OK' })
+
+    } catch (error) {
+        res.status(500).send({ status: 'FALSE' })
+    }
+}
+
+const editFinances = async (req, res) => {
+    const { clientDni } = req.params;
+    console.log(clientDni)
+
+    try {
+        const deleteClient = await UserModel.deleteOne({ dni: clientDni })
+        return res.status(200).send({ status: 'OK' })
+
+    } catch (error) {
+        res.status(500).send({ status: 'FALSE' })
+    }
+}
 
 
 
-module.exports = { createClient, getOneClient, updateClient }
+module.exports = { createClient, getOneClient, updateClient, deleteClient, editFinances }
