@@ -2,7 +2,7 @@ const FinancesModels = require("../models/financesModels")
 
 const saveFinances = async (req, res) => {
 
-    const { concept, finance, amortization, interest, result } = req.body
+    const { concept, finance, amortization, interest } = req.body
     const { clientDni } = req.params
 
     try {
@@ -11,10 +11,9 @@ const saveFinances = async (req, res) => {
             finance,
             amortization,
             interest,
-            monthlyFee: result.toFixed(2),
+            monthlyFee:((parseFloat(finance) * parseFloat((interest / 100 / 12))) / (1 - (Math.pow(1 + (interest / 100 / 12), -(amortization * 12))))).toFixed(2),
             userDni: clientDni
         })
-
         return res.status(200).send({ status: 'OK', newFinance })
 
 
@@ -65,7 +64,7 @@ const deleteFinances = async (req, res) => {
 }
 const editFinances = async (req, res) => {
     const { financesId } = req.params;
-    const { concept, finance, amortization, interest, monthlyFee, userDni } = req.body;
+    const { concept, finance, amortization, interest, userDni } = req.body;
     
     try {
 
@@ -75,7 +74,7 @@ const editFinances = async (req, res) => {
             finance: finance,
             amortization: amortization,
             interest: interest,
-            monthlyFee: monthlyFee
+            monthlyFee: ((parseFloat(finance) * parseFloat((interest / 100 / 12))) / (1 - (Math.pow(1 + (interest / 100 / 12), -(amortization * 12))))).toFixed(2),
         },
         {
             new:true
