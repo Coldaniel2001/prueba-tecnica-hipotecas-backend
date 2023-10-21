@@ -7,16 +7,12 @@ const createClient = async (req, res) => {
         const dniExist = await UserModel.findOne({ dni })
         const gmailExist = await UserModel.findOne({ email: gmail })
         if (dniExist && !gmailExist) {
-            console.log(dni)
             return res.status(200).send({ status: 'EXISTE DNI' })
         } else if (gmailExist && !dniExist) {
-            console.log(dni)
             return res.status(200).send({ status: 'EXISTE Gmail' })
         } else if (dniExist && gmailExist) {
-            console.log(dni)
             return res.status(200).send({ status: 'EXISTE Gmail y DNI' })
         } else {
-            console.log(dni)
             const newClient = await UserModel.create({
                 name,
                 dni,
@@ -47,7 +43,7 @@ const updateClient = async (req, res) => {
     const { dni, email, name } = req.body;
 
     try {
-        const emailExistByDni = await UserModel.findOne({dni})
+        const emailExistByDni = await UserModel.findOne({ dni })
         const emailExist = await UserModel.find({ email })
 
         if (emailExist.length === 0 || emailExistByDni.email === email) {
@@ -67,22 +63,6 @@ const updateClient = async (req, res) => {
 }
 const deleteClient = async (req, res) => {
     const { clientDni } = req.params;
-    console.log(clientDni)
-
-    try {
-
-        const deleteClient = await UserModel.deleteOne({ dni: clientDni })
-
-        return res.status(200).send({ status: 'OK' })
-
-    } catch (error) {
-        res.status(500).send({ status: 'FALSE' })
-    }
-}
-
-const editFinances = async (req, res) => {
-    const { clientDni } = req.params;
-    console.log(clientDni)
 
     try {
         const deleteClient = await UserModel.deleteOne({ dni: clientDni })
@@ -95,4 +75,4 @@ const editFinances = async (req, res) => {
 
 
 
-module.exports = { createClient, getOneClient, updateClient, deleteClient, editFinances }
+module.exports = { createClient, getOneClient, updateClient, deleteClient }

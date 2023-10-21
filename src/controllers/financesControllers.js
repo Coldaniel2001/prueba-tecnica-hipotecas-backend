@@ -36,7 +36,7 @@ const getFinancesFromClient = async (req, res) => {
     }
 }
 
-const deleteClient = async (req, res) => {
+const deleteClientFinances = async (req, res) => {
     const { clientDni } = req.params;
 
     try {
@@ -90,4 +90,4 @@ const editFinances = async (req, res) => {
     }
 }
 
-module.exports = { saveFinances, getFinancesFromClient, deleteClient, deleteFinances, editFinances }
+module.exports = { saveFinances, getFinancesFromClient, deleteClientFinances, deleteFinances, editFinances }
