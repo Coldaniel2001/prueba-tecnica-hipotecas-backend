@@ -47,10 +47,10 @@ const updateClient = async (req, res) => {
     const { dni, email, name } = req.body;
 
     try {
-
+        const emailExistByDni = await UserModel.findOne({dni})
         const emailExist = await UserModel.find({ email })
 
-        if (emailExist.length === 0) {
+        if (emailExist.length === 0 || emailExistByDni.email === email) {
             const updateClient = await UserModel.findOneAndUpdate({ dni }, {
                 email,
                 name
